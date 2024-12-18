@@ -12,8 +12,7 @@ router.post('/places', async (req, res) => {
     try {
         let allPlaces = [];
         let nextPageToken = null;
-        do {
-            const response = await axios.get(placesUrl + (nextPageToken ? `&pagetoken=${nextPageToken}` : ''));
+        const response = await axios.get(placesUrl);
             let places = response.data.results;
             for (let place of places) {
                 if (place.photos) {
@@ -23,11 +22,23 @@ router.post('/places', async (req, res) => {
                 }
             }
             allPlaces = [...allPlaces, ...response.data.results];
-            nextPageToken = response.data.next_page_token;
-            if (nextPageToken) {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
-        } while (nextPageToken);
+        // do {
+        //     // const response = await axios.get(placesUrl + (nextPageToken ? `&pagetoken=${nextPageToken}` : ''));
+        //     // const response = await axios.get(placesUrl);
+        //     // let places = response.data.results;
+        //     // for (let place of places) {
+        //     //     if (place.photos) {
+        //     //         const photoReference = place.photos[0].photo_reference;
+        //     //         const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${apiKey}`;
+        //     //         place.image = photoUrl;
+        //     //     }
+        //     // }
+        //     // allPlaces = [...allPlaces, ...response.data.results];
+        //     nextPageToken = response.data.next_page_token;
+        //     if (nextPageToken) {
+        //         await new Promise(resolve => setTimeout(resolve, 2000));
+        //     }
+        // } while (nextPageToken);
         res.status(200).json(allPlaces);
     } catch (error) {
         console.error(error);

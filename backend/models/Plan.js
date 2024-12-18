@@ -1,15 +1,30 @@
 import mongoose from 'mongoose';
 
-const planSchema = new mongoose.Schema({
+const placeSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  location: {
-    type: { type: String, enum: ['Point'], required: true },
-    coordinates: { type: [Number], required: true },
+  geometry: {
+    location: {
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true },
+    },
+  },
+  vicinity: { type: String, required: true },
+  types: { type: [String], required: true },
+  photos: [{
+    photo_reference: { type: String, required: true },
+    width: { type: Number },
+    height: { type: Number },
+  }],
+  rating: { type: Number },
+});
+
+const plannerSchema = new mongoose.Schema({
+  places: {
+    type: [placeSchema],
+    required: true,
   },
 });
 
-planSchema.index({ location: '2dsphere' });
-
-const Plan = mongoose.model('Plan', planSchema);
+const Plan = mongoose.model('Plan', plannerSchema);
 
 export default Plan;

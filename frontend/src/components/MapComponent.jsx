@@ -11,10 +11,11 @@ const MapComponent = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [places, setPlaces] = useState([]);
-  const [radius, setRadius] = useState(1000);
+  const [radius, setRadius] = useState(400);
   const [error, setError] = useState(null);
   const [selectedPlaceType, setSelectedPlaceTypes] = useState('restaurant');
   const [activePlace, setActivePlace] = useState(null);
+  const [planner, setPlanner] = useState([]);
   const placeTypes = ['restaurant', 'cafe', 'park'];
 
   useEffect(() => {
@@ -57,21 +58,35 @@ const MapComponent = () => {
   };
 
   const handlePlaceClick = (place) => {
+    console.log(place);
     setActivePlace(place);
   };
 
   const handlePlaceTypeSelect = async (newPlaceType) => {
+    if(activePlace) setPlanner((prevPlanner) => [...prevPlanner, activePlace]);
     setActivePlace(null); 
     const lat = selectedLocation ? selectedLocation.lat : currentLocation.lat;
     const lng = selectedLocation ? selectedLocation.lng : currentLocation.lng;
+    console.log(planner);
     await fetchPlaces(lat, lng, radius, newPlaceType);
+  };
+
+  const savePlannerData = async () => {
+    try {
+      console.log(planner);
+      const response = await axios.post('http://localhost:4000/plans/planner', { planner });
+      console.log(response.data.message);
+    } catch (error) {
+      console.error('Error saving planner data:', error);
+    }
   };
 
   return (
     <div className="main-container">
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <div className="place-container">
+        <div className="place-container">
         <h3>Select Place Types</h3>
+        <button onClick={savePlannerData}>Save Planner to Backend</button>
         {placeTypes.map((type) => (
           <label key={type}>
             <input
