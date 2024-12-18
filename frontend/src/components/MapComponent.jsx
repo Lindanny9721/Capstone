@@ -3,10 +3,9 @@ import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/ap
 import axios from 'axios';
 
 const mapContainerStyle = {
-  width: '100vw',
+  flex: 1,
   height: '100vh',
 };
-
 const MapComponent = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -43,6 +42,7 @@ const MapComponent = () => {
   const fetchPlaces = async (lat,lng,radius) => {
     setError('');
     try {
+      console.log(selectedPlaceType);
       const response = await axios.post('http://localhost:4000/apiPlaces/places', { lat, lng, radius, selectedPlaceType });
       setPlaces(response.data);
       console.log(response.data);
@@ -53,45 +53,60 @@ const MapComponent = () => {
   }
 
   return (
-    <>
-    {error && <div style={{ color: 'red' }}>{error}</div>}
-    <div className='place-types'>
-      <h3>Select Place Types</h3>
-      {placeTypes.map((type) => (
-          <label key={type}>
-            <input
-              type="radio"
-              name="placeType"
-              value={type}
-              checked={selectedPlaceType === type}
-              onChange={handlePlaceTypeChange}
-            />
-            {type}
-          </label>
-        ))}
-    </div>
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={currentLocation}
-        zoom={15}
-        onClick={handleMapClick}
-      >
-        {places.map((place, index) => (
-          <Marker
-            key={index}
-            position={{
-              lat: place.geometry.location.lat,
-              lng: place.geometry.location.lng,
-            }}
-            />
+    <div className='main-container'>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <div className='place-container'>
+          <h3>Select Place Types</h3>
+          {placeTypes.map((type) => (
+            <label key={type}>
+              <input
+                type="radio"
+                name="placeType"
+                value={type}
+                checked={selectedPlaceType === type}
+                onChange={handlePlaceTypeChange}
+              />
+              {type}
+            </label>
           ))}
+          <h3>Places</h3>
+          {places.length === 0 && <p>No places found.</p>}
+          {places.map((place, index) => (
+            <div key={index}>
+              <h4>{place.name}</h4>
+              {place.image && (
+                <img
+                  className= 'place-image'
+                  src={place.image}
+                  alt={place.name}
+                />
+              )}
+              <p>{place.vicinity}</p>
+            </div>
+          ))}
+        </div>
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={currentLocation}
+          zoom={15}
+          onClick={handleMapClick}
+        >
+          {places.map((place, index) => (
             <Marker
-              position={selectedLocation}
-            />
-      </GoogleMap>
-    </LoadScript>
-    </>
+              key={index}
+              position={{
+                lat: place.geometry.location.lat,
+                lng: place.geometry.location.lng,
+              }}
+              />
+            ))}
+              <Marker
+                position={selectedLocation}
+              />
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 };
 
