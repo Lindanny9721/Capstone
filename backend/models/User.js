@@ -23,6 +23,5 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     })
 }
-
 const User = mongoose.model("User", userSchema);
 export default User;

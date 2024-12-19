@@ -30,6 +30,7 @@ router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     try {
         const user = await User.findOne({email});
+        console.log(user);
         if(!user) return res.status(404).json({ error: 'Invalid password or email' });
         user.comparePassword(password, (err,isMatch) => {
             if(err) return res.send("Server Error").status(500)
@@ -40,10 +41,10 @@ router.post("/login", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h'}
         )
-        res.status(200).json("Login Successful", token);
+        res.status(200).json({message: "Login Successful", token});
     } catch(error) {
         console.error(error);
-        res.status(404).json({ error: 'Error Login', token });
+        res.status(404).json({ error: 'Error Login' });
     }
 });
 router.get('/userInfo', authMiddleWare, async (req, res) => {

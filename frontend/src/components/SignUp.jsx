@@ -25,14 +25,15 @@ const SignUp = () => {
         setError('');
         setLoading(true);
         try {
+            console.log(userData);
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, userData);
             console.log(response.data);
             localStorage.setItem('token', response.data.token);
             window.location.href = "/map";
         } catch (error) {
             setLoading(false);
-            console.log(error.response);
-            setError(error.response.data.error);
+            console.log(error.response.data);
+            setError(error.response.data);
         }
         
     };
