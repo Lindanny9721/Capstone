@@ -39,12 +39,13 @@ const SignUp = () => {
 
     return (
         <div>
-        <h2>Sign Up</h2>
+        <h2 className="signin-text">Sign Up</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
             <div>
             <label htmlFor="username">Username</label>
             <input
+                className="signin-input"
                 type="text"
                 id="username"
                 name="username"
@@ -57,6 +58,7 @@ const SignUp = () => {
             <div>
             <label htmlFor="email">Email</label>
             <input
+                className="signin-input"
                 type="email"
                 id="email"
                 name="email"
@@ -69,6 +71,7 @@ const SignUp = () => {
             <div>
             <label htmlFor="password">Password</label>
             <input
+                className="signin-input"
                 type="password"
                 id="password"
                 name="password"
@@ -78,7 +81,7 @@ const SignUp = () => {
             />
             </div>
 
-            <button className = "signin-button" type="submit" disabled={loading}>Sign Up</button>
+            <button className = "signup-button" type="submit" disabled={loading}>Sign Up</button>
         </form>
         </div>
     );

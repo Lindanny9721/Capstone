@@ -9,7 +9,7 @@ export default function SignUpPage() {
             <div className="signup-body">
                 <div className = "signup-container">
                     <SignUp/>
-                    <Link to='/login'> Have an have a account?</Link>
+                    <Link className = "signup-link" to='/login'> Have an have a account?</Link>
                 </div>
             </div>
         </div>

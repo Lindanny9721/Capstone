@@ -9,7 +9,7 @@ export default function LoginPage() {
             <div className="login-body">
                 <div className="login-container">
                     <Login/>
-                    <Link to='/signup'> Don't have a account?</Link>
+                    <Link className = "login-link"to='/signup'> Don't have a account?</Link>
                 </div>
             </div>
         </div>
