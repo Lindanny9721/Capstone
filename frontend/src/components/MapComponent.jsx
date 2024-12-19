@@ -64,6 +64,8 @@ const MapComponent = () => {
   };
 
   const handlePlaceTypeSelect = async (newPlaceType) => {
+    setSelectedPlaceTypes(newPlaceType);
+    console.log(selectedPlaceType);
     if(activePlace) setPlanner((prevPlanner) => [...prevPlanner, activePlace]);
     setActivePlace(null); 
     const lat = selectedLocation ? selectedLocation.lat : currentLocation.lat;
