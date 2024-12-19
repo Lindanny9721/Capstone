@@ -72,7 +72,6 @@ const PlanList = () => {
       const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/plans/planner/${planId}`, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response.data);
       setPlans(plans.filter(plan => plan._id !== planId));
     } catch (error) {
       console.error('Error deleting plan:', error);

@@ -17,7 +17,8 @@ const MapComponent = () => {
   const [activePlace, setActivePlace] = useState(null);
   const [planner, setPlanner] = useState([]);
   const [plannerName, setPlannerName] = useState('');
-  const placeTypes = ['restaurant', 'cafe', 'park'];
+  const [placeTypes, setPlaceTypes] = useState(['restaurant', 'cafe', 'park']);
+  const [newPlaceType, setNewPlaceType] = useState('');
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -49,28 +50,23 @@ const MapComponent = () => {
   const fetchPlaces = async (lat, lng, radius, placeType) => {
     setError('');
     try {
-      console.log(placeType);
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/apiPlaces/places`, { lat, lng, radius, placeType });
       setPlaces(response.data);
-      console.log(places);
     } catch (error) {
       setError('Error fetching places: ' + error.message);
     }
   };
 
   const handlePlaceClick = (place) => {
-    console.log(place);
     setActivePlace(place);
   };
 
   const handlePlaceTypeSelect = async (newPlaceType) => {
     setSelectedPlaceTypes(newPlaceType);
-    console.log(selectedPlaceType);
     if(activePlace) setPlanner((prevPlanner) => [...prevPlanner, activePlace]);
     setActivePlace(null); 
     const lat = selectedLocation ? selectedLocation.lat : currentLocation.lat;
     const lng = selectedLocation ? selectedLocation.lng : currentLocation.lng;
-    console.log(planner);
     await fetchPlaces(lat, lng, radius, newPlaceType);
   };
 
@@ -81,12 +77,10 @@ const MapComponent = () => {
         setError('You need to be logged in to save your plans.');
         return;
       }
-      console.log(token);
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/plans/planner`, 
         { name: plannerName, planner },
         { headers: {Authorization: `Bearer ${token}`}}
       );
-      console.log(response.data.message);
     } catch (error) {
       console.error('Error saving planner data:', error);
     }
@@ -94,11 +88,19 @@ const MapComponent = () => {
   const handlePlannerNameChange = (event) => {
     setPlannerName(event.target.value);
   };
+  const handleAddPlaceType = () => {
+    if (newPlaceType && !placeTypes.includes(newPlaceType)) {
+      setPlaceTypes((prevTypes) => [...prevTypes, newPlaceType]);
+      setNewPlaceType('');
+    } else {
+      setError('Please enter a valid and unique place type');
+    }
+  };
 
   return (
     <div className="main-container">
       {error && <div style={{ color: 'red' }}>{error}</div>}
-        <div className="place-container">
+        <div className="left-container">
         <h3>Select Place Types</h3>
         <div>
         <label>Planner Name: </label>
@@ -110,6 +112,16 @@ const MapComponent = () => {
         />
       </div>
         <button onClick={savePlannerData}>Save Planner to Backend</button>
+        <div>
+          <label>Add a New Place Type:</label>
+          <input
+            type="text"
+            value={newPlaceType}
+            onChange={(e) => setNewPlaceType(e.target.value)}
+            placeholder="Enter new place type"
+          />
+          <button onClick={handleAddPlaceType}>Add Place Type</button>
+        </div>
         {placeTypes.map((type) => (
           <label key={type}>
             <input
@@ -125,7 +137,7 @@ const MapComponent = () => {
         <h3>Places</h3>
         {places.length === 0 && <p>No places found.</p>}
         {places.map((place, index) => (
-          <div key={index} onClick={() => handlePlaceClick(place)} style={{ cursor: 'pointer', marginBottom: '10px' }}>
+          <div className= "place-container" key={index} onClick={() => handlePlaceClick(place)} style={{ cursor: 'pointer', marginBottom: '10px' }}>
             <h4>{place.name}</h4>
             {place.image && <img className="place-image" src={place.image} alt={place.name} />}
             <p>{place.vicinity}</p>
