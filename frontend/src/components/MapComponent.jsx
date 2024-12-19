@@ -16,6 +16,7 @@ const MapComponent = () => {
   const [selectedPlaceType, setSelectedPlaceTypes] = useState('restaurant');
   const [activePlace, setActivePlace] = useState(null);
   const [planner, setPlanner] = useState([]);
+  const [plannerName, setPlannerName] = useState('');
   const placeTypes = ['restaurant', 'cafe', 'park'];
 
   useEffect(() => {
@@ -73,12 +74,15 @@ const MapComponent = () => {
 
   const savePlannerData = async () => {
     try {
-      console.log(planner);
-      const response = await axios.post('http://localhost:4000/plans/planner', { planner });
+      console.log(plannerName);
+      const response = await axios.post('http://localhost:4000/plans/planner', { name: plannerName, planner });
       console.log(response.data.message);
     } catch (error) {
       console.error('Error saving planner data:', error);
     }
+  };
+  const handlePlannerNameChange = (event) => {
+    setPlannerName(event.target.value);
   };
 
   return (
@@ -86,6 +90,15 @@ const MapComponent = () => {
       {error && <div style={{ color: 'red' }}>{error}</div>}
         <div className="place-container">
         <h3>Select Place Types</h3>
+        <div>
+        <label>Planner Name: </label>
+        <input 
+          type="text" 
+          value={plannerName} 
+          onChange={handlePlannerNameChange} 
+          placeholder="Enter planner name" 
+        />
+      </div>
         <button onClick={savePlannerData}>Save Planner to Backend</button>
         {placeTypes.map((type) => (
           <label key={type}>
