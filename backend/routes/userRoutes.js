@@ -7,7 +7,6 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
     try {
-        console.log("TEST");
         const existingEmail = await User.findOne({ email });
         const existingUsername = await User.findOne({ username });
         if (existingUsername) return res.status(400).json({ error: 'This username already exist.' });
@@ -19,7 +18,6 @@ router.post('/signup', async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
-        console.log(token)
         res.status(200).json({ message: 'User created successfully', token });
     } catch (error) {
         console.error(error);
@@ -30,7 +28,6 @@ router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     try {
         const user = await User.findOne({email});
-        console.log(user);
         if(!user) return res.status(404).json({ error: 'Invalid password or email' });
         user.comparePassword(password, (err,isMatch) => {
             if(err) return res.send("Server Error").status(500)

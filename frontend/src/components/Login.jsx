@@ -24,7 +24,6 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:4000/users/login', userData);
             window.location.href = "/map";
-            console.log(response.data);
         } catch (error) {
             if (error.response) {
                 setError(error.response.data.error);

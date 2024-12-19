@@ -5,10 +5,8 @@ const router = express.Router();
 
 router.post('/places', async (req, res) => {
     const { lat, lng, radius, placeType } = req.body;
-    console.log(placeType);
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
     let placesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${placeType}&key=${apiKey}`;
-    console.log(placesUrl);
     try {
         let allPlaces = [];
         let nextPageToken = null;

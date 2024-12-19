@@ -21,7 +21,6 @@ const PlanDetails = () => {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/plans/planner/${planId}`, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response.data);
       setPlan(response.data);
     } catch (error) {
       console.error('Error fetching plan details:', error);
@@ -41,6 +40,9 @@ const PlanDetails = () => {
               <li key={index}>
                 {place.name} - {place.vicinity}
                 <img src={place.image} alt={place.name} />
+                <p>Rating: {place.rating}</p>
+                <p>Total Rating: {place.user_ratings_total} </p>
+                
               </li>
             ))}
           </ul>
