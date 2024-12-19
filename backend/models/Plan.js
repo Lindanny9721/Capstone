@@ -10,11 +10,7 @@ const placeSchema = new mongoose.Schema({
   },
   vicinity: { type: String, required: true },
   types: { type: [String], required: true },
-  photos: [{
-    photo_reference: { type: String, required: true },
-    width: { type: Number },
-    height: { type: Number },
-  }],
+  image: { type: String, required: true },
   rating: { type: Number },
 });
 
