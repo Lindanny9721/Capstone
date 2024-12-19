@@ -1,3 +1,6 @@
+body {
+  height:100vh
+}
 .place-container {
   width: 20vw;
   height: 100vh;
@@ -29,4 +32,19 @@
 .navbar-link {
   color: black;
   text-decoration: none;
+}
+.signup-body, .login-body{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signup-container, .login-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  max-width: 400px;
+  box-sizing: border-box; /* Prevents padding from affecting total width */
+  margin: 0 auto;
 }

@@ -4,10 +4,14 @@ import Navbar from "../components/Nav";
 
 export default function LoginPage() {
     return (
-        <div className="login">
+        <div>
             <Navbar/>
-            <Login/>
-            <Link to='/signup'> Don't have a account?</Link>
+            <div className="login-body">
+                <div className="login-container">
+                    <Login/>
+                    <Link to='/signup'> Don't have a account?</Link>
+                </div>
+            </div>
         </div>
     );
 }

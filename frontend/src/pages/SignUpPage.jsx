@@ -4,10 +4,14 @@ import Navbar from "../components/Nav";
 
 export default function SignUpPage() {
     return (
-        <div className="login">
+        <div>
             <Navbar/>
-            <SignUp/>
-            <Link to='/login'> Have an have a account?</Link>
+            <div className="signup-body">
+                <div className = "signup-container">
+                    <SignUp/>
+                    <Link to='/login'> Have an have a account?</Link>
+                </div>
+            </div>
         </div>
     );
 }

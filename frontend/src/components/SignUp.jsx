@@ -78,7 +78,7 @@ const SignUp = () => {
             />
             </div>
 
-            <button type="submit" disabled={loading}>Sign Up</button>
+            <button className = "signin-button" type="submit" disabled={loading}>Sign Up</button>
         </form>
         </div>
     );
