@@ -47,16 +47,6 @@ const MapComponent = () => {
     setSelectedPlaceTypes(e.target.value);
   };
 
-  const fetchPlaces = async (lat, lng, radius, placeType) => {
-    setError('');
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/apiPlaces/places`, { lat, lng, radius, placeType });
-      setPlaces(response.data);
-    } catch (error) {
-      setError('Error fetching places: ' + error.message);
-    }
-  };
-
   const handlePlaceClick = (place) => {
     setActivePlace(place);
   };
@@ -65,6 +55,7 @@ const MapComponent = () => {
     setSelectedPlaceTypes(newPlaceType);
     if(activePlace) setPlanner((prevPlanner) => [...prevPlanner, activePlace]);
     setActivePlace(null); 
+    console.log(planner);
     const lat = selectedLocation ? selectedLocation.lat : currentLocation.lat;
     const lng = selectedLocation ? selectedLocation.lng : currentLocation.lng;
     await fetchPlaces(lat, lng, radius, newPlaceType);
@@ -96,7 +87,15 @@ const MapComponent = () => {
       setError('Please enter a valid and unique place type');
     }
   };
-
+  const fetchPlaces = async (lat, lng, radius, placeType) => {
+    setError('');
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/apiPlaces/places`, { lat, lng, radius, placeType });
+      setPlaces(response.data);
+    } catch (error) {
+      setError('Error fetching places: ' + error.message);
+    }
+  };
   return (
     <div className="main-container">
       {error && <div style={{ color: 'red' }}>{error}</div>}
@@ -140,7 +139,9 @@ const MapComponent = () => {
           <div className= "place-container" key={index} onClick={() => handlePlaceClick(place)} style={{ cursor: 'pointer', marginBottom: '10px' }}>
             <h4>{place.name}</h4>
             {place.image && <img className="place-image" src={place.image} alt={place.name} />}
-            <p>{place.vicinity}</p>
+            <p>Address: {place.vicinity}</p>
+            <p>Rating: {place.rating}</p>
+            <p>Total Rating: {place.user_ratings_total} </p>
           </div>
         ))}
       </div>
@@ -173,7 +174,9 @@ const MapComponent = () => {
               <div>
                 <h4>{activePlace.name}</h4>
                 <img style={{width: '80%'}} src = {activePlace.image}></img>
-                <p>{activePlace.vicinity}</p>
+                <p>Address: {activePlace.vicinity}</p>
+                <p>Rating: {activePlace.rating}</p>
+                <p>Total Rating: {activePlace.user_ratings_total} </p>
                 <h5>Select a new place type:</h5>
                 <select onChange={(e) => handlePlaceTypeSelect(e.target.value)} value={selectedPlaceType}>
                   <option value="">Select Place Type</option>
