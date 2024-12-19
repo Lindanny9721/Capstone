@@ -39,4 +39,32 @@ router.get('/planner/:planId', authMiddleWare, async (req, res) => {
         res.status(500).json({ error: 'Error fetching plan details' });
     }
 });
+router.delete('/planner/:planId', authMiddleWare, async (req, res) => {
+    const { planId } = req.params;
+    try {
+        const plan = await Plan.findById(planId);
+        if (!plan)  return res.status(404).json({ error: 'Plan not found' });
+        if (plan.user._id.toString() !== req.user.id) return res.status(403).json({ error: 'Unauthorized' });
+        await plan.deleteOne({_id: planId});
+        res.status(200).json({ message: 'Plan deleted' });
+    } catch (error) {
+        console.error('Error deleting plan:', error);
+        res.status(500).json({ error: 'Error deleting plan' });
+    }
+});
+router.patch('/planner/:planId', authMiddleWare, async (req, res) => {
+    const { planId } = req.params;
+    const { name } = req.body;
+    try {
+        const plan = await Plan.findById(planId);
+        if (!plan) return res.status(404).json({ error: 'Plan not found' });
+        if (plan.user.toString() !== req.user.id) return res.status(403).json({ error: 'Unauthorized' });
+        plan.name = name;
+        await plan.save(); 
+        res.status(200).json({ message: 'Plan updated', plan });
+    } catch (error) {
+        console.error('Error updating plan:', error);
+        res.status(500).json({ error: 'Error updating plan' });
+    }
+});
 export default router;
