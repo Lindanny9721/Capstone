@@ -24,6 +24,11 @@ const plannerSchema = new mongoose.Schema({
     type: [placeSchema],
     required: true,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
 const Plan = mongoose.model('Plan', plannerSchema);

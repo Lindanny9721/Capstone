@@ -74,8 +74,16 @@ const MapComponent = () => {
 
   const savePlannerData = async () => {
     try {
-      console.log(plannerName);
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/plans/planner`, { name: plannerName, planner });
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('You need to be logged in to save your plans.');
+        return;
+      }
+      console.log(token);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/plans/planner`, 
+        { name: plannerName, planner },
+        { headers: {Authorization: `Bearer ${token}`}}
+      );
       console.log(response.data.message);
     } catch (error) {
       console.error('Error saving planner data:', error);

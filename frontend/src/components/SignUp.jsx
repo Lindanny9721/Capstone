@@ -7,6 +7,7 @@ const SignUp = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData({
@@ -17,19 +18,23 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(userData);
         if (!userData.username || !userData.email || !userData.password) {
             setError('All fields are required.');
             return;
         }
         setError('');
+        setLoading(true);
         try {
-            const response = await axios.post('http://localhost:4000/users/signup', userData);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, userData);
             console.log(response.data);
+            localStorage.setItem('token', response.data.token);
+            window.location.href = "/map";
         } catch (error) {
+            setLoading(false);
             console.log(error.response);
             setError(error.response.data.error);
         }
+        
     };
 
     return (
@@ -73,7 +78,7 @@ const SignUp = () => {
             />
             </div>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit" disabled={loading}>Sign Up</button>
         </form>
         </div>
     );

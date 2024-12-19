@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 import Navbar from "../components/Nav";
 
