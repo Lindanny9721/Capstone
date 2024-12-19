@@ -5,10 +5,11 @@ import MapPage from './pages/MapPage';
 import SignUpPage from './pages/SignUpPage'
 import Homepage from './pages/HomePage';
 import './App.css';
+import MapComponent from './components/MapComponent';
 const App = () => {
   return (
     <div className="App">
-      <Homepage/>
+      {/* <MapComponent/> */}
       <Routes>
         <Route path='/' element={<Homepage/>}/>
         <Route path='/signup' element={<SignUpPage/>}/>

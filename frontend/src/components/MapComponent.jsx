@@ -50,7 +50,7 @@ const MapComponent = () => {
     setError('');
     try {
       console.log(placeType);
-      const response = await axios.post('http://localhost:4000/apiPlaces/places', { lat, lng, radius, placeType });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/apiPlaces/places`, { lat, lng, radius, placeType });
       setPlaces(response.data);
       console.log(places);
     } catch (error) {
@@ -75,7 +75,7 @@ const MapComponent = () => {
   const savePlannerData = async () => {
     try {
       console.log(plannerName);
-      const response = await axios.post('http://localhost:4000/plans/planner', { name: plannerName, planner });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/plans/planner`, { name: plannerName, planner });
       console.log(response.data.message);
     } catch (error) {
       console.error('Error saving planner data:', error);

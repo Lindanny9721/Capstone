@@ -12,3 +12,21 @@
   display: flex;
   width: 100%;
 }
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F1EFF0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar-links {
+  list-style-type: none;
+  display: flex;
+  gap: 15px;
+}
+.navbar-link {
+  color: black;
+  text-decoration: none;
+}
