@@ -32,8 +32,7 @@ const SignUp = () => {
             window.location.href = "/map";
         } catch (error) {
             setLoading(false);
-            console.log(error.response.data);
-            setError(error.response.data);
+            setError(error.response.data.error);
         }
         
     };
