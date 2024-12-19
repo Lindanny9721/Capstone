@@ -55,7 +55,6 @@ const MapComponent = () => {
     setSelectedPlaceTypes(newPlaceType);
     if(activePlace) setPlanner((prevPlanner) => [...prevPlanner, activePlace]);
     setActivePlace(null); 
-    console.log(planner);
     const lat = selectedLocation ? selectedLocation.lat : currentLocation.lat;
     const lng = selectedLocation ? selectedLocation.lng : currentLocation.lng;
     await fetchPlaces(lat, lng, radius, newPlaceType);
@@ -86,6 +85,9 @@ const MapComponent = () => {
     } else {
       setError('Please enter a valid and unique place type');
     }
+  };
+  const handleRadiusChange = (e) => {
+    setRadius(e.target.value);
   };
   const fetchPlaces = async (lat, lng, radius, placeType) => {
     setError('');
@@ -120,6 +122,17 @@ const MapComponent = () => {
             placeholder="Enter new place type"
           />
           <button onClick={handleAddPlaceType}>Add Place Type</button>
+        </div>
+        <div>
+          <label>Change Radius (meters): </label>
+          <input
+            type="number"
+            value={radius}
+            onChange={handleRadiusChange}
+            min="100" 
+            max="2000" 
+            step="100" 
+          />
         </div>
         {placeTypes.map((type) => (
           <label key={type}>
